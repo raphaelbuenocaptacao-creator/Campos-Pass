@@ -1,167 +1,342 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Campos Pass - Explore, Ganhe, Aproveite</title>
-    <!-- Font Awesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+
     <style>
-        /* ===== RESET E ESTILOS GLOBAIS ===== */
+        /* ============================================================
+                   RESET & BASE
+                   ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #0f1f3a;
+            --primary: #1a3a5c;
+            --primary-light: #2a5a7a;
+            --secondary: #2d6a4f;
+            --secondary-light: #409f7a;
+            --gold: #c9a84c;
+            --gold-light: #f5e6b0;
+            --cream: #faf6ef;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            background: #f4f6fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #e8ecf0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 16px;
+            padding: 20px;
+            margin: 0;
         }
 
-        /* ===== CONTAINER DO PROTÓTIPO (SIMULA APP) ===== */
-        .app-container {
-            max-width: 390px;
+        /* ============================================================
+                   APP CONTAINER
+                   ============================================================ */
+        #app {
             width: 100%;
-            height: 780px;
-            background: #ffffff;
+            max-width: 420px;
+            height: 820px;
+            background: var(--white);
             border-radius: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 255, 255, 0.6);
+            box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.4);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
-            transition: all 0.2s ease;
         }
 
-        /* ===== STATUS BAR (SIMULAÇÃO) ===== */
+        /* ============================================================
+                   STATUS BAR (SIMULADA)
+                   ============================================================ */
         .status-bar {
             display: flex;
             justify-content: space-between;
-            padding: 12px 24px 8px;
+            padding: 12px 24px 6px;
             font-size: 12px;
             font-weight: 600;
-            color: #1e293b;
-            background: #ffffff;
+            color: var(--gray-700);
+            background: var(--white);
             flex-shrink: 0;
+            z-index: 10;
         }
 
-        .status-bar i {
-            margin: 0 2px;
-        }
-
-        /* ===== HEADER COM SAUDAÇÃO E CLIMA ===== */
-        .header {
-            padding: 0 20px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #ffffff;
-            flex-shrink: 0;
-        }
-
-        .greeting h2 {
-            font-size: 22px;
+        .status-bar .time {
             font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.3px;
         }
 
-        .greeting p {
-            font-size: 14px;
-            color: #64748b;
-            font-weight: 500;
-            margin-top: 2px;
-        }
-
-        .weather-box {
-            background: #eef2ff;
-            padding: 6px 14px 6px 10px;
-            border-radius: 30px;
+        .status-bar .icons {
             display: flex;
-            align-items: center;
             gap: 6px;
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .weather-box i {
-            font-size: 18px;
-            color: #f59e0b;
-        }
-
-        /* ===== RECOMENDAÇÃO DO DIA (CLIMA) ===== */
-        .daily-tip {
-            margin: 0 20px 16px;
-            background: linear-gradient(145deg, #1e3a5f, #0f2a44);
-            border-radius: 20px;
-            padding: 16px 20px;
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            color: #ffffff;
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(15, 42, 68, 0.25);
         }
 
-        .daily-tip .tip-text {
+        /* ============================================================
+                   HEADER COM SAUDAÇÃO
+                   ============================================================ */
+        .app-header {
+            padding: 4px 20px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            background: var(--white);
+            position: relative;
+            z-index: 5;
+        }
+
+        .header-left {
             display: flex;
             flex-direction: column;
         }
 
-        .daily-tip .tip-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            font-weight: 600;
-        }
-
-        .daily-tip .tip-title {
-            font-size: 16px;
+        .header-left .greeting {
+            font-size: 20px;
             font-weight: 700;
-            margin-top: 2px;
+            color: var(--gray-900);
+            letter-spacing: -0.3px;
         }
 
-        .daily-tip .tip-sub {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-top: 2px;
+        .header-left .greeting span {
+            background: linear-gradient(135deg, var(--gold), #b8942e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .daily-tip .tip-icon {
-            background: rgba(255, 255, 255, 0.15);
-            width: 48px;
-            height: 48px;
+        .header-left .sub {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-right .weather {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--gray-50);
+            padding: 6px 14px 6px 10px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        .header-right .weather i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--white);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
 
-        /* ===== CONTEÚDO PRINCIPAL (SCROLL) ===== */
+        .header-right .avatar:active {
+            transform: scale(0.92);
+        }
+
+        /* ============================================================
+                   BARRA DE PESQUISA
+                   ============================================================ */
+        .search-bar {
+            padding: 0 20px 14px;
+            flex-shrink: 0;
+        }
+
+        .search-bar .input-wrap {
+            display: flex;
+            align-items: center;
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: 0 16px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .search-bar .input-wrap:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.12);
+            background: var(--white);
+        }
+
+        .search-bar .input-wrap i {
+            color: var(--gray-400);
+            font-size: 16px;
+        }
+
+        .search-bar .input-wrap input {
+            border: none;
+            background: transparent;
+            padding: 12px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-800);
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-bar .input-wrap input::placeholder {
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        /* ============================================================
+                   CONTEÚDO PRINCIPAL (SCROLL)
+                   ============================================================ */
         .main-content {
             flex: 1;
             overflow-y: auto;
-            padding: 0 0 16px;
+            padding-bottom: 8px;
             scroll-behavior: smooth;
         }
 
         .main-content::-webkit-scrollbar {
-            width: 0px;
+            width: 0;
             background: transparent;
         }
 
-        /* ===== SEÇÃO DE ATALHOS RÁPIDOS ===== */
-        .quick-actions {
+        /* ============================================================
+                   CARD DE CLIMA / RECOMENDAÇÃO
+                   ============================================================ */
+        .climate-card {
+            margin: 0 20px 16px;
+            background: linear-gradient(145deg, var(--primary-dark), var(--primary));
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--white);
+            box-shadow: 0 8px 28px rgba(15, 31, 58, 0.30);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .climate-card::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 140px;
+            height: 140px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .climate-card .info .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            opacity: 0.6;
+            font-weight: 600;
+        }
+
+        .climate-card .info .temp {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 2px;
+            line-height: 1;
+        }
+
+        .climate-card .info .temp small {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .climate-card .info .condition {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .climate-card .info .recommend {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .climate-card .info .recommend i {
+            font-size: 14px;
+        }
+
+        .climate-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+                   ATALHOS RÁPIDOS
+                   ============================================================ */
+        .quick-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
@@ -169,252 +344,265 @@
         }
 
         .quick-btn {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 12px 4px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 14px 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            border: 1px solid #f1f5f9;
-            transition: all 0.2s ease;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
             cursor: pointer;
             text-decoration: none;
-            color: #1e293b;
+            color: var(--gray-700);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.94);
+            background: var(--gray-100);
         }
 
         .quick-btn i {
             font-size: 22px;
-            color: #1e3a5f;
+            color: var(--primary);
         }
 
         .quick-btn span {
             font-size: 11px;
             font-weight: 600;
-            color: #334155;
+            color: var(--gray-600);
         }
 
-        .quick-btn:active {
-            transform: scale(0.95);
-            background: #eef2ff;
-        }
-
-        /* ===== SEÇÃO "EXPLORE POR CATEGORIA" ===== */
-        .section-header {
+        /* ============================================================
+                   SEÇÃO HEADER
+                   ============================================================ */
+        .section-head {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px 10px;
         }
 
-        .section-header h3 {
-            font-size: 18px;
+        .section-head h3 {
+            font-size: 17px;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--gray-900);
         }
 
-        .section-header a {
+        .section-head a {
             font-size: 13px;
-            color: #1e3a5f;
+            color: var(--primary);
             font-weight: 600;
             text-decoration: none;
+            transition: var(--transition);
         }
 
+        .section-head a:active {
+            opacity: 0.6;
+        }
+
+        /* ============================================================
+                   SCROLL DE CATEGORIAS
+                   ============================================================ */
         .category-scroll {
             display: flex;
-            gap: 14px;
-            padding: 0 20px 20px;
+            gap: 12px;
+            padding: 0 20px 18px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
         }
 
         .category-scroll::-webkit-scrollbar {
-            height: 0px;
+            height: 0;
         }
 
-        .category-card {
-            min-width: 100px;
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 14px 8px;
+        .cat-card {
+            min-width: 90px;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 14px 8px 12px;
             text-align: center;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
             scroll-snap-align: start;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             cursor: pointer;
             flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .category-card:active {
-            transform: scale(0.95);
+        .cat-card:active {
+            transform: scale(0.94);
+            border-color: var(--primary);
         }
 
-        .category-card .emoji-big {
+        .cat-card .emoji {
             font-size: 28px;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
-        .category-card span {
+        .cat-card .name {
             font-size: 12px;
             font-weight: 600;
-            color: #1e293b;
+            color: var(--gray-700);
         }
 
-        .category-card .badge-count {
+        .cat-card .count {
             font-size: 10px;
-            color: #94a3b8;
+            color: var(--gray-400);
             font-weight: 500;
             display: block;
             margin-top: 2px;
         }
 
-        /* ===== LISTA DE LUGARES EM DESTAQUE ===== */
+        /* ============================================================
+                   LISTA DE LOCAIS
+                   ============================================================ */
         .place-list {
-            padding: 0 20px 10px;
+            padding: 0 20px 12px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .place-item {
+        .place-card {
             display: flex;
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 12px;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
             align-items: center;
             gap: 14px;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
         }
 
-        .place-item:active {
+        .place-card:active {
             transform: scale(0.98);
-            background: #f8fafc;
+            background: var(--gray-50);
         }
 
-        .place-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 14px;
-            background: #e2e8f0;
+        .place-card .img {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 30px;
             flex-shrink: 0;
-            color: #1e3a5f;
+            color: var(--primary);
         }
 
-        .place-info {
+        .place-card .info {
             flex: 1;
+            min-width: 0;
         }
 
-        .place-info h4 {
+        .place-card .info .name {
             font-size: 15px;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--gray-900);
         }
 
-        .place-info .place-type {
+        .place-card .info .type {
             font-size: 12px;
-            color: #64748b;
+            color: var(--gray-500);
             font-weight: 500;
         }
 
-        .place-info .place-meta {
+        .place-card .info .meta {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-top: 4px;
             font-size: 11px;
-            color: #94a3b8;
+            color: var(--gray-400);
+            flex-wrap: wrap;
         }
 
-        .place-info .place-meta i {
+        .place-card .info .meta i.fa-star {
             color: #f59e0b;
-            margin-right: 2px;
         }
 
-        .place-tag {
-            background: #eef2ff;
-            padding: 4px 12px;
+        .place-card .tag {
+            background: var(--gray-100);
+            padding: 3px 12px;
             border-radius: 30px;
             font-size: 10px;
             font-weight: 700;
-            color: #1e3a5f;
+            color: var(--primary);
             white-space: nowrap;
         }
 
-        /* ===== BOTTOM NAV (SIMULAÇÃO) ===== */
-        .bottom-nav {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: #ffffff;
-            border-top: 1px solid #f1f5f9;
-            padding: 6px 0 12px;
-            flex-shrink: 0;
+        .place-card .tag.sun {
+            background: #fef3c7;
+            color: #92400e;
         }
 
-        .nav-item {
+        .place-card .tag.rain {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .place-card .fav {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 2px;
-            font-size: 10px;
-            color: #94a3b8;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            justify-content: center;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            color: var(--gray-400);
+            transition: var(--transition);
+            flex-shrink: 0;
             cursor: pointer;
-            text-decoration: none;
-            border: none;
-            background: transparent;
+            font-size: 14px;
         }
 
-        .nav-item i {
-            font-size: 22px;
-            transition: all 0.2s ease;
+        .place-card .fav:active {
+            transform: scale(0.85);
         }
 
-        .nav-item.active {
-            color: #1e3a5f;
+        .place-card .fav.active {
+            color: #ef4444;
+            background: #fef2f2;
+            border-color: #fca5a5;
         }
 
-        .nav-item.active i {
-            transform: translateY(-2px);
-        }
-
-        .nav-item:active {
-            transform: scale(0.92);
-        }
-
-        /* ===== GAMIFICAÇÃO / SELOS (MINI) ===== */
+        /* ============================================================
+                   SELOS / GAMIFICAÇÃO
+                   ============================================================ */
         .badge-row {
             display: flex;
             gap: 8px;
-            padding: 0 20px 14px;
-            align-items: center;
+            padding: 0 20px 16px;
             flex-wrap: wrap;
         }
 
         .badge-pill {
-            background: #f8fafc;
-            padding: 4px 14px 4px 10px;
+            background: var(--gray-50);
+            padding: 5px 14px 5px 10px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 11px;
             font-weight: 600;
-            color: #1e293b;
-            border: 1px solid #f1f5f9;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
         }
 
         .badge-pill i {
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .badge-pill.gold {
@@ -429,33 +617,483 @@
             color: #166534;
         }
 
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 430px) {
-            .app-container {
+        .badge-pill.blue {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            color: #1e40af;
+        }
+
+        /* ============================================================
+                   OFERTA DESTAQUE
+                   ============================================================ */
+        .offer-card {
+            margin: 0 20px 16px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #fcd34d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .offer-card:active {
+            transform: scale(0.98);
+        }
+
+        .offer-card .text .label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #92400e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .offer-card .text .title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #78350f;
+            margin-top: 2px;
+        }
+
+        .offer-card .btn-resgate {
+            background: var(--white);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .offer-card .btn-resgate:active {
+            transform: scale(0.92);
+        }
+
+        /* ============================================================
+                   BOTTOM NAVIGATION
+                   ============================================================ */
+        .bottom-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            padding: 4px 0 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gray-400);
+            transition: var(--transition);
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 4px 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: inherit;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            transform: translateY(-2px);
+        }
+
+        .nav-item:active {
+            transform: scale(0.92);
+        }
+
+        /* ============================================================
+                   PÁGINAS (VIEWS)
+                   ============================================================ */
+        .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* ============================================================
+                   PÁGINA: MAPA
+                   ============================================================ */
+        .map-placeholder {
+            flex: 1;
+            background: #e8ecf0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 16px 16px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-placeholder .map-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(26, 58, 92, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 70% 60%, rgba(45, 106, 79, 0.05) 0%, transparent 50%);
+        }
+
+        .map-placeholder .map-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .map-placeholder .map-content i {
+            font-size: 48px;
+            color: var(--primary);
+            opacity: 0.3;
+            margin-bottom: 12px;
+        }
+
+        .map-placeholder .map-content h4 {
+            color: var(--gray-600);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .map-placeholder .map-content p {
+            color: var(--gray-400);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .map-filters {
+            display: flex;
+            gap: 8px;
+            padding: 0 20px 12px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .map-filters::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .filter-chip {
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .filter-chip:active {
+            transform: scale(0.94);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* ============================================================
+                   PÁGINA: PASS (BENEFÍCIOS)
+                   ============================================================ */
+        .pass-card {
+            margin: 0 20px 16px;
+            background: linear-gradient(145deg, var(--primary-dark), var(--primary));
+            border-radius: var(--radius-lg);
+            padding: 20px 22px;
+            color: var(--white);
+            box-shadow: 0 8px 28px rgba(15, 31, 58, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pass-card::after {
+            content: '✦';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 80px;
+            opacity: 0.06;
+            font-weight: 300;
+        }
+
+        .pass-card .pass-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            font-weight: 600;
+        }
+
+        .pass-card .pass-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .pass-card .pass-number {
+            font-size: 12px;
+            opacity: 0.5;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .pass-card .pass-level {
+            display: inline-block;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .benefit-list {
+            padding: 0 20px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .benefit-item:active {
+            transform: scale(0.98);
+        }
+
+        .benefit-item .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .benefit-item .info {
+            flex: 1;
+        }
+
+        .benefit-item .info .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .benefit-item .info .desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .benefit-item .discount {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   PÁGINA: PERFIL
+                   ============================================================ */
+        .profile-header {
+            padding: 0 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-header .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--white);
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-header .name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-top: 10px;
+        }
+
+        .profile-header .level {
+            font-size: 14px;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 0 20px 16px;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-item .number {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .stat-item .label {
+            font-size: 11px;
+            color: var(--gray-500);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .profile-menu {
+            padding: 0 20px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-item:active {
+            background: var(--gray-50);
+        }
+
+        .menu-item i {
+            font-size: 18px;
+            color: var(--gray-400);
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-item .text {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .menu-item .arrow {
+            color: var(--gray-300);
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   SCROLL HINT
+                   ============================================================ */
+        .scroll-hint {
+            text-align: center;
+            font-size: 10px;
+            color: var(--gray-300);
+            padding: 4px 0 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================================
+                   RESPONSIVIDADE
+                   ============================================================ */
+        @media (max-width: 440px) {
+            #app {
                 height: 95vh;
                 max-height: 820px;
                 border-radius: 28px;
             }
         }
 
-        @media (max-width: 360px) {
-            .header .greeting h2 {
-                font-size: 18px;
+        @media (max-width: 380px) {
+            .header-left .greeting {
+                font-size: 17px;
             }
             .quick-btn span {
                 font-size: 10px;
             }
-            .category-card {
-                min-width: 80px;
+            .cat-card {
+                min-width: 76px;
                 padding: 10px 4px;
+            }
+            .cat-card .emoji {
+                font-size: 22px;
             }
         }
 
-        /* ===== ANIMAÇÃO DE ENTRADA ===== */
+        @media (min-width: 768px) {
+            #app {
+                max-width: 480px;
+                height: 860px;
+            }
+        }
+
+        /* ============================================================
+                   ANIMAÇÕES
+                   ============================================================ */
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
@@ -463,256 +1101,610 @@
             }
         }
 
-        .app-container {
-            animation: fadeUp 0.6s ease both;
+        #app {
+            animation: fadeUp 0.5s ease both;
         }
 
-        /* ===== INTERATIVIDADE EXTRA (hover/active) ===== */
-        .place-item, .category-card, .quick-btn, .nav-item {
-            -webkit-tap-highlight-color: transparent;
+        @keyframes pulse-gold {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(201, 168, 76, 0);
+            }
         }
 
-        /* ===== SCROLL INDICATOR (SUGESTÃO) ===== */
-        .scroll-hint {
-            text-align: center;
-            font-size: 10px;
-            color: #cbd5e1;
-            padding: 2px 0 8px;
-            letter-spacing: 0.5px;
+        .pass-card {
+            animation: pulse-gold 3s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
+
+    <!-- ============================================================
+    APP
+    ============================================================ -->
+    <div id="app">
 
         <!-- ===== STATUS BAR ===== -->
         <div class="status-bar">
-            <span>9:41</span>
-            <span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i></span>
+            <span class="time">9:41</span>
+            <span class="icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </span>
         </div>
 
-        <!-- ===== HEADER ===== -->
-        <div class="header">
-            <div class="greeting">
-                <h2>Olá, viajante! 👋</h2>
-                <p>Campos do Jordão te espera</p>
+        <!-- ===== PÁGINA: INÍCIO ===== -->
+        <div id="page-home" class="page active">
+
+            <!-- HEADER -->
+            <div class="app-header">
+                <div class="header-left">
+                    <div class="greeting">Olá, <span>Raphael</span> 👋</div>
+                    <div class="sub">Pronto para explorar Campos?</div>
+                </div>
+                <div class="header-right">
+                    <div class="weather">
+                        <i class="fas fa-cloud-sun"></i> 14°
+                    </div>
+                    <div class="avatar">R</div>
+                </div>
             </div>
-            <div class="weather-box">
-                <i class="fas fa-cloud-sun"></i> 14°C
+
+            <!-- SEARCH -->
+            <div class="search-bar">
+                <div class="input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="O que você quer descobrir hoje?" />
+                </div>
+            </div>
+
+            <!-- CONTEÚDO PRINCIPAL -->
+            <div class="main-content">
+
+                <!-- CLIMA CARD -->
+                <div class="climate-card">
+                    <div class="info">
+                        <div class="label">☀️ Hoje em Campos</div>
+                        <div class="temp">14° <small>máx 18°</small></div>
+                        <div class="condition">Ensolarado · Céu limpo</div>
+                        <div class="recommend">
+                            <i class="fas fa-hiking"></i> Ótimo dia para mirantes e parques
+                        </div>
+                    </div>
+                    <div class="icon-wrap">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+
+                <!-- ATALHOS -->
+                <div class="quick-grid">
+                    <button class="quick-btn" onclick="navigateTo('page-map')">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Mapa</span>
+                    </button>
+                    <button class="quick-btn" onclick="navigateTo('page-home')">
+                        <i class="fas fa-route"></i>
+                        <span>Roteiro</span>
+                    </button>
+                    <button class="quick-btn" onclick="navigateTo('page-pass')">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Benefícios</span>
+                    </button>
+                    <button class="quick-btn" onclick="navigateTo('page-home')">
+                        <i class="fas fa-trophy"></i>
+                        <span>Selos</span>
+                    </button>
+                </div>
+
+                <!-- CATEGORIAS -->
+                <div class="section-head">
+                    <h3>Explorar</h3>
+                    <a href="#">Ver todos</a>
+                </div>
+                <div class="category-scroll">
+                    <div class="cat-card">
+                        <span class="emoji">🏛️</span>
+                        <span class="name">Pontos Turíst.</span>
+                        <span class="count">28 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🍽️</span>
+                        <span class="name">Gastronomia</span>
+                        <span class="count">46 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">☕</span>
+                        <span class="name">Cafés</span>
+                        <span class="count">18 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🍫</span>
+                        <span class="name">Chocolaterias</span>
+                        <span class="count">12 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🏨</span>
+                        <span class="name">Hotéis</span>
+                        <span class="count">32 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🏡</span>
+                        <span class="name">Pousadas</span>
+                        <span class="count">20 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🎟️</span>
+                        <span class="name">Passeios</span>
+                        <span class="count">15 lugares</span>
+                    </div>
+                    <div class="cat-card">
+                        <span class="emoji">🌲</span>
+                        <span class="name">Natureza</span>
+                        <span class="count">10 lugares</span>
+                    </div>
+                </div>
+
+                <!-- DESTAQUES -->
+                <div class="section-head">
+                    <h3>✨ Destaques de hoje</h3>
+                    <a href="#">Ver mais</a>
+                </div>
+                <div class="place-list">
+
+                    <div class="place-card">
+                        <div class="img">🌲</div>
+                        <div class="info">
+                            <div class="name">Parque Amantikir</div>
+                            <div class="type">Parque · Jardins</div>
+                            <div class="meta">
+                                <span><i class="fas fa-star"></i> 4.8</span>
+                                <span>📍 2,3 km</span>
+                                <span class="tag sun">☀️ Sol</span>
+                            </div>
+                        </div>
+                        <button class="fav"><i class="far fa-heart"></i></button>
+                    </div>
+
+                    <div class="place-card">
+                        <div class="img">🧀</div>
+                        <div class="info">
+                            <div class="name">Fondue Só Queijo</div>
+                            <div class="type">Restaurante · Fondue</div>
+                            <div class="meta">
+                                <span><i class="fas fa-star"></i> 4.7</span>
+                                <span>📍 0,8 km</span>
+                                <span class="tag rain">🌧️ Chuva</span>
+                            </div>
+                        </div>
+                        <button class="fav"><i class="far fa-heart"></i></button>
+                    </div>
+
+                    <div class="place-card">
+                        <div class="img">🗻</div>
+                        <div class="info">
+                            <div class="name">Morro do Elefante</div>
+                            <div class="type">Mirante · Teleférico</div>
+                            <div class="meta">
+                                <span><i class="fas fa-star"></i> 4.9</span>
+                                <span>📍 3,1 km</span>
+                                <span class="tag sun">☀️ Sol</span>
+                            </div>
+                        </div>
+                        <button class="fav"><i class="far fa-heart"></i></button>
+                    </div>
+
+                    <div class="place-card">
+                        <div class="img">🍫</div>
+                        <div class="info">
+                            <div class="name">Chocolateria Bruno Alves</div>
+                            <div class="type">Chocolateria · Café</div>
+                            <div class="meta">
+                                <span><i class="fas fa-star"></i> 4.6</span>
+                                <span>📍 0,4 km</span>
+                                <span class="tag rain">🌧️ Chuva</span>
+                            </div>
+                        </div>
+                        <button class="fav"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+
+                <!-- SELOS -->
+                <div class="section-head">
+                    <h3>🏅 Seus selos</h3>
+                    <a href="#">Ver todos</a>
+                </div>
+                <div class="badge-row">
+                    <span class="badge-pill gold"><i class="fas fa-star"></i> Explorador</span>
+                    <span class="badge-pill green"><i class="fas fa-check-circle"></i> 3 check-ins</span>
+                    <span class="badge-pill"><i class="fas fa-utensils"></i> Chocolover</span>
+                    <span class="badge-pill blue"><i class="fas fa-mountain"></i> Aventureiro</span>
+                </div>
+
+                <!-- OFERTA -->
+                <div class="offer-card">
+                    <div class="text">
+                        <div class="label">🔥 Oferta exclusiva</div>
+                        <div class="title">10% off no Parque Amantikir</div>
+                    </div>
+                    <button class="btn-resgate" onclick="resgatarOferta(this)">Resgatar</button>
+                </div>
+
+                <div class="scroll-hint">↓ role para mais</div>
+
             </div>
         </div>
 
-        <!-- ===== DICA DO DIA (CLIMA) ===== -->
-        <div class="daily-tip">
-            <div class="tip-text">
-                <span class="tip-label">☀️ Dica do dia</span>
-                <span class="tip-title">Dia de sol!</span>
-                <span class="tip-sub">Aproveite os mirantes e parques</span>
+        <!-- ===== PÁGINA: MAPA ===== -->
+        <div id="page-map" class="page">
+
+            <div class="app-header" style="padding-bottom: 4px;">
+                <div class="header-left">
+                    <div class="greeting" style="font-size: 18px;">🗺️ Mapa</div>
+                    <div class="sub">Encontre os melhores lugares</div>
+                </div>
+                <div class="header-right">
+                    <button style="background:transparent;border:none;font-size:20px;color:var(--gray-400);cursor:pointer;" onclick="navigateTo('page-home')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-            <div class="tip-icon">
-                <i class="fas fa-hiking"></i>
+
+            <div class="map-filters">
+                <span class="filter-chip active">Todos</span>
+                <span class="filter-chip">Turismo</span>
+                <span class="filter-chip">Gastronomia</span>
+                <span class="filter-chip">Hotéis</span>
+                <span class="filter-chip">Passeios</span>
+                <span class="filter-chip">Chocolaterias</span>
+            </div>
+
+            <div class="map-placeholder">
+                <div class="map-bg"></div>
+                <div class="map-content">
+                    <i class="fas fa-map"></i>
+                    <h4>Mapa interativo</h4>
+                    <p>Integração com Leaflet + OpenStreetMap<br />Marcadores por categoria</p>
+                    <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+                        <span style="background:var(--primary);color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;">🟢 Turismo</span>
+                        <span style="background:#ef4444;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;">🍽️ Restaurantes</span>
+                        <span style="background:#3b82f6;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;">🏨 Hotéis</span>
+                        <span style="background:#8b5cf6;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;">🍫 Chocolaterias</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa com marcadores simulados -->
+            <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:12px;background:var(--white);border-radius:var(--radius-sm);padding:10px 14px;border:1px solid var(--gray-200);box-shadow:var(--shadow-sm);">
+                    <span style="font-size:20px;">📍</span>
+                    <div style="flex:1;">
+                        <div style="font-weight:600;font-size:13px;color:var(--gray-800);">Parque Amantikir</div>
+                        <div style="font-size:11px;color:var(--gray-500);">🟢 Turismo · 2,3 km</div>
+                    </div>
+                    <button style="background:var(--primary);color:#fff;border:none;padding:4px 14px;border-radius:30px;font-size:11px;font-weight:600;cursor:pointer;">Ver</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;background:var(--white);border-radius:var(--radius-sm);padding:10px 14px;border:1px solid var(--gray-200);box-shadow:var(--shadow-sm);">
+                    <span style="font-size:20px;">📍</span>
+                    <div style="flex:1;">
+                        <div style="font-weight:600;font-size:13px;color:var(--gray-800);">Fondue Só Queijo</div>
+                        <div style="font-size:11px;color:var(--gray-500);">🍽️ Gastronomia · 0,8 km</div>
+                    </div>
+                    <button style="background:var(--primary);color:#fff;border:none;padding:4px 14px;border-radius:30px;font-size:11px;font-weight:600;cursor:pointer;">Ver</button>
+                </div>
             </div>
         </div>
 
-        <!-- ===== CONTEÚDO PRINCIPAL ===== -->
-        <div class="main-content">
+        <!-- ===== PÁGINA: PASS (BENEFÍCIOS) ===== -->
+        <div id="page-pass" class="page">
 
-            <!-- ATALHOS RÁPIDOS -->
-            <div class="quick-actions">
-                <a class="quick-btn" href="#">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>Mapa</span>
-                </a>
-                <a class="quick-btn" href="#">
-                    <i class="fas fa-route"></i>
-                    <span>Roteiro</span>
-                </a>
-                <a class="quick-btn" href="#">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span>Benefícios</span>
-                </a>
-                <a class="quick-btn" href="#">
-                    <i class="fas fa-trophy"></i>
-                    <span>Selos</span>
-                </a>
-            </div>
-
-            <!-- CATEGORIAS -->
-            <div class="section-header">
-                <h3>Explorar</h3>
-                <a href="#">Ver todos</a>
-            </div>
-            <div class="category-scroll">
-                <div class="category-card">
-                    <span class="emoji-big">🏛️</span>
-                    <span>Pontos Turíst.</span>
-                    <span class="badge-count">28 lugares</span>
+            <div class="app-header" style="padding-bottom: 4px;">
+                <div class="header-left">
+                    <div class="greeting" style="font-size:18px;">🎟️ Campos Pass</div>
+                    <div class="sub">Seus benefícios exclusivos</div>
                 </div>
-                <div class="category-card">
-                    <span class="emoji-big">🍽️</span>
-                    <span>Gastronomia</span>
-                    <span class="badge-count">46 lugares</span>
-                </div>
-                <div class="category-card">
-                    <span class="emoji-big">🏨</span>
-                    <span>Hospedagem</span>
-                    <span class="badge-count">32 lugares</span>
-                </div>
-                <div class="category-card">
-                    <span class="emoji-big">🎟️</span>
-                    <span>Passeios</span>
-                    <span class="badge-count">15 lugares</span>
-                </div>
-                <div class="category-card">
-                    <span class="emoji-big">🛍️</span>
-                    <span>Compras</span>
-                    <span class="badge-count">12 lugares</span>
+                <div class="header-right">
+                    <button style="background:transparent;border:none;font-size:20px;color:var(--gray-400);cursor:pointer;" onclick="navigateTo('page-home')">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- DESTAQUES -->
-            <div class="section-header">
-                <h3>✨ Destaques</h3>
-                <a href="#">Ver mais</a>
-            </div>
-            <div class="place-list">
+            <div class="main-content">
+                <div class="pass-card">
+                    <div class="pass-label">✦ CAMPOS PASS</div>
+                    <div class="pass-name">Raphael Oliveira</div>
+                    <div class="pass-number">#CP-2026-0842</div>
+                    <div class="pass-level">⭐ Nível Explorador · 1.250 XP</div>
+                </div>
 
-                <div class="place-item">
-                    <div class="place-img">🌲</div>
-                    <div class="place-info">
-                        <h4>Parque Amantikir</h4>
-                        <span class="place-type">Parque • Jardins</span>
-                        <div class="place-meta">
-                            <span><i class="fas fa-star"></i> 4.8</span>
-                            <span>📍 2,3 km</span>
-                            <span class="place-tag">☀️ Sol</span>
+                <div class="section-head">
+                    <h3>🎁 Benefícios disponíveis</h3>
+                </div>
+
+                <div class="benefit-list">
+                    <div class="benefit-item">
+                        <div class="icon">🍽️</div>
+                        <div class="info">
+                            <div class="name">Fondue Só Queijo</div>
+                            <div class="desc">10% off na conta · até 4 pessoas</div>
                         </div>
+                        <div class="discount">-10%</div>
                     </div>
-                </div>
-
-                <div class="place-item">
-                    <div class="place-img">🧀</div>
-                    <div class="place-info">
-                        <h4>Fondue Só Queijo</h4>
-                        <span class="place-type">Restaurante • Fondue</span>
-                        <div class="place-meta">
-                            <span><i class="fas fa-star"></i> 4.7</span>
-                            <span>📍 0,8 km</span>
-                            <span class="place-tag">🌧️ Chuva</span>
+                    <div class="benefit-item">
+                        <div class="icon">🍫</div>
+                        <div class="info">
+                            <div class="name">Chocolateria Bruno Alves</div>
+                            <div class="desc">15% off em compras acima de R$100</div>
                         </div>
+                        <div class="discount">-15%</div>
                     </div>
-                </div>
-
-                <div class="place-item">
-                    <div class="place-img">🗻</div>
-                    <div class="place-info">
-                        <h4>Morro do Elefante</h4>
-                        <span class="place-type">Mirante • Teleférico</span>
-                        <div class="place-meta">
-                            <span><i class="fas fa-star"></i> 4.9</span>
-                            <span>📍 3,1 km</span>
-                            <span class="place-tag">☀️ Sol</span>
+                    <div class="benefit-item">
+                        <div class="icon">🗻</div>
+                        <div class="info">
+                            <div class="name">Morro do Elefante</div>
+                            <div class="desc">Ingresso com 20% de desconto</div>
                         </div>
+                        <div class="discount">-20%</div>
                     </div>
-                </div>
-
-                <div class="place-item">
-                    <div class="place-img">🍫</div>
-                    <div class="place-info">
-                        <h4>Chocolateria Bruno Alves</h4>
-                        <span class="place-type">Chocolateria • Café</span>
-                        <div class="place-meta">
-                            <span><i class="fas fa-star"></i> 4.6</span>
-                            <span>📍 0,4 km</span>
-                            <span class="place-tag">🌧️ Chuva</span>
+                    <div class="benefit-item">
+                        <div class="icon">🏨</div>
+                        <div class="info">
+                            <div class="name">Hotel Villa Langma</div>
+                            <div class="desc">5% off na diária + cortesia</div>
                         </div>
+                        <div class="discount">-5%</div>
                     </div>
+                </div>
+
+                <div style="padding:0 20px 12px;">
+                    <button style="width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-md);font-size:15px;font-weight:700;cursor:pointer;transition:var(--transition);" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <i class="fas fa-qrcode"></i> Ver meu QR Code
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: PERFIL ===== -->
+        <div id="page-profile" class="page">
+
+            <div class="app-header" style="padding-bottom: 4px;">
+                <div class="header-left">
+                    <div class="greeting" style="font-size:18px;">👤 Perfil</div>
+                    <div class="sub">Sua jornada em Campos</div>
+                </div>
+                <div class="header-right">
+                    <button style="background:transparent;border:none;font-size:20px;color:var(--gray-400);cursor:pointer;" onclick="navigateTo('page-home')">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- SELOS / GAMIFICAÇÃO MINI -->
-            <div class="section-header" style="padding-top: 4px;">
-                <h3>🏅 Seus selos</h3>
-                <a href="#">Ver todos</a>
-            </div>
-            <div class="badge-row">
-                <span class="badge-pill gold"><i class="fas fa-star"></i> Explorador</span>
-                <span class="badge-pill green"><i class="fas fa-check-circle"></i> 3 check-ins</span>
-                <span class="badge-pill"><i class="fas fa-utensils"></i> Chocolover</span>
-                <span class="badge-pill"><i class="fas fa-mountain"></i> Aventureiro</span>
-            </div>
+            <div class="main-content">
+                <div class="profile-header">
+                    <div class="avatar-large">R</div>
+                    <div class="name">Raphael Oliveira</div>
+                    <div class="level">⭐ Explorador · 1.250 XP</div>
+                </div>
 
-            <!-- OFERTA DESTAQUE -->
-            <div style="padding: 12px 20px 8px;">
-                <div style="background: linear-gradient(145deg, #fef3c7, #fde68a); border-radius: 18px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #fcd34d;">
-                    <div>
-                        <span style="font-size: 12px; font-weight: 700; color: #92400e; text-transform: uppercase;">🔥 Oferta exclusiva</span>
-                        <p style="font-size: 14px; font-weight: 700; color: #78350f; margin-top: 2px;">10% off no Parque Amantikir</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="number">12</div>
+                        <div class="label">Check-ins</div>
                     </div>
-                    <span style="background: #ffffff; padding: 4px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; color: #1e3a5f; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">Resgatar</span>
+                    <div class="stat-item">
+                        <div class="number">8</div>
+                        <div class="label">Selos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">5</div>
+                        <div class="label">Ofertas</div>
+                    </div>
+                </div>
+
+                <div class="section-head">
+                    <h3>⚙️ Configurações</h3>
+                </div>
+
+                <div class="profile-menu">
+                    <div class="menu-item">
+                        <i class="fas fa-user-edit"></i>
+                        <span class="text">Editar perfil</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-history"></i>
+                        <span class="text">Minha jornada</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-trophy"></i>
+                        <span class="text">Conquistas</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-bell"></i>
+                        <span class="text">Notificações</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span class="text">Preferências</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="menu-item" style="margin-top:8px;border-top:1px solid var(--gray-200);padding-top:14px;">
+                        <i class="fas fa-sign-out-alt" style="color:#ef4444;"></i>
+                        <span class="text" style="color:#ef4444;">Sair</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                    </div>
                 </div>
             </div>
-
-            <div class="scroll-hint">↓ role para mais</div>
-
         </div>
 
         <!-- ===== BOTTOM NAV ===== -->
         <div class="bottom-nav">
-            <button class="nav-item active">
+            <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
                 <i class="fas fa-home"></i>
                 <span>Início</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" data-page="page-map" onclick="navigateTo('page-map')">
                 <i class="fas fa-map"></i>
                 <span>Mapa</span>
             </button>
-            <button class="nav-item">
-                <i class="fas fa-trophy"></i>
+            <button class="nav-item" data-page="page-pass" onclick="navigateTo('page-pass')">
+                <i class="fas fa-ticket-alt"></i>
                 <span>Pass</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
                 <i class="fas fa-user"></i>
                 <span>Perfil</span>
+            </button>
+            <button class="nav-item" data-page="page-home" onclick="navigateTo('page-home')">
+                <i class="fas fa-trophy"></i>
+                <span>Ranking</span>
             </button>
         </div>
 
     </div>
 
-    <!-- ===== PEQUENO SCRIPT PARA SIMULAR INTERATIVIDADE ===== -->
+    <!-- ============================================================
+    SCRIPT
+    ============================================================ -->
     <script>
-        // Navegação inferior: ativa ao clicar
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                navItems.forEach(nav => nav.classList.remove('active'));
+        /**
+         * Navegação entre páginas
+         */
+        function navigateTo(pageId) {
+            // Esconde todas as páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            // Mostra a página alvo
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            // Atualiza o bottom nav
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.page === pageId) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Scroll para o topo da página
+            const mainContent = target?.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.scrollTop = 0;
+            }
+        }
+
+        /**
+         * Favoritar / Desfavoritar
+         */
+        document.querySelectorAll('.fav').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (this.classList.contains('active')) {
+                    icon.className = 'fas fa-heart';
+                } else {
+                    icon.className = 'far fa-heart';
+                }
+            });
+        });
+
+        /**
+         * Resgatar oferta
+         */
+        function resgatarOferta(btn) {
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Resgatado!';
+            btn.style.background = '#dcfce7';
+            btn.style.color = '#166534';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 2500);
+        }
+
+        /**
+         * Filtros do mapa
+         */
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
             });
         });
 
-        // Cards e itens com feedback tátil (já tem no CSS :active)
-        // Pequeno alerta demonstrativo ao clicar em "Resgatar" oferta
-        document.querySelector('.daily-tip .tip-icon')?.addEventListener('click', function() {
-            // feedback sutil
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+        /**
+         * Placeholder para cards de categoria
+         */
+        document.querySelectorAll('.cat-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.querySelector('.name')?.textContent || 'categoria';
+                alert(`🔍 Explorar: ${name}\n\nFuncionalidade em desenvolvimento.\nEm breve você verá todos os lugares desta categoria!`);
+            });
         });
 
-        // Clicar em oferta
-        document.querySelector('[style*="background: linear-gradient"] span:last-child')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.innerText = '✅ Resgatado!';
-            this.style.background = '#dcfce7';
-            this.style.color = '#166534';
-            setTimeout(() => {
-                this.innerText = 'Resgatar';
-                this.style.background = '#ffffff';
-                this.style.color = '#1e3a5f';
-            }, 2000);
+        /**
+         * Placeholder para place cards
+         */
+        document.querySelectorAll('.place-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Evita conflito com o botão de favorito
+                if (e.target.closest('.fav')) return;
+                const name = this.querySelector('.name')?.textContent || 'Local';
+                alert(`📍 ${name}\n\nDetalhes do local em breve!\n\n⭐ Avaliação: ${this.querySelector('.meta span:first-child')?.textContent || '4.5'}\n📍 Distância: ${this.querySelector('.meta span:last-child')?.textContent || '1 km'}`);
+            });
         });
 
-        // Efeito nos itens de lugar (já tem :active)
-        console.log('🎒 Campos Pass - Protótipo interativo carregado!');
+        /**
+         * Benefícios
+         */
+        document.querySelectorAll('.benefit-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const name = this.querySelector('.name')?.textContent || 'Benefício';
+                const discount = this.querySelector('.discount')?.textContent || '';
+                alert(`🎟️ ${name}\n\nDesconto: ${discount}\n\n✅ Use seu Campos Pass para resgatar!\n\nApresente o QR Code no estabelecimento.`);
+            });
+        });
+
+        /**
+         * Menu do perfil
+         */
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text')?.textContent || 'opção';
+                if (text === 'Sair') {
+                    if (confirm('Tem certeza que deseja sair?')) {
+                        alert('👋 Até logo! Volte sempre a Campos do Jordão.');
+                    }
+                    return;
+                }
+                alert(`⚙️ ${text}\n\nFuncionalidade em desenvolvimento.`);
+            });
+        });
+
+        /**
+         * Clima card - clique para mais detalhes
+         */
+        document.querySelector('.climate-card')?.addEventListener('click', function() {
+            alert('🌤️ Previsão para Campos do Jordão\n\n' +
+                '☀️ Hoje: 14°C · Ensolarado\n' +
+                '🌙 Amanhã: 12°C · Parcialmente nublado\n' +
+                '🌧️ Depois: 10°C · Possibilidade de chuva\n\n' +
+                '💡 Dica: Aproveite o sol hoje para visitar os mirantes!');
+        });
+
+        console.log('🏔️ Campos Pass v2.0 carregado com sucesso!');
+        console.log('✨ Explore, ganhe, aproveite!');
     </script>
 
 </body>
