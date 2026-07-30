@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Campos Pass - Explore, Ganhe, Aproveite</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== RESET E ESTILOS GLOBAIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        /* ===== CONTAINER DO PROTÓTIPO (SIMULA APP) ===== */
+        .app-container {
+            max-width: 390px;
+            width: 100%;
+            height: 780px;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* ===== STATUS BAR (SIMULAÇÃO) ===== */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 24px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .status-bar i {
+            margin: 0 2px;
+        }
+
+        /* ===== HEADER COM SAUDAÇÃO E CLIMA ===== */
+        .header {
+            padding: 0 20px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .greeting h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+        }
+
+        .greeting p {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .weather-box {
+            background: #eef2ff;
+            padding: 6px 14px 6px 10px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .weather-box i {
+            font-size: 18px;
+            color: #f59e0b;
+        }
+
+        /* ===== RECOMENDAÇÃO DO DIA (CLIMA) ===== */
+        .daily-tip {
+            margin: 0 20px 16px;
+            background: linear-gradient(145deg, #1e3a5f, #0f2a44);
+            border-radius: 20px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #ffffff;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(15, 42, 68, 0.25);
+        }
+
+        .daily-tip .tip-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .daily-tip .tip-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            font-weight: 600;
+        }
+
+        .daily-tip .tip-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .daily-tip .tip-sub {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .daily-tip .tip-icon {
+            background: rgba(255, 255, 255, 0.15);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* ===== CONTEÚDO PRINCIPAL (SCROLL) ===== */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 0 16px;
+            scroll-behavior: smooth;
+        }
+
+        .main-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* ===== SEÇÃO DE ATALHOS RÁPIDOS ===== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 0 20px 18px;
+        }
+
+        .quick-btn {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: #1e293b;
+        }
+
+        .quick-btn i {
+            font-size: 22px;
+            color: #1e3a5f;
+        }
+
+        .quick-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.95);
+            background: #eef2ff;
+        }
+
+        /* ===== SEÇÃO "EXPLORE POR CATEGORIA" ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px 10px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .section-header a {
+            font-size: 13px;
+            color: #1e3a5f;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .category-scroll {
+            display: flex;
+            gap: 14px;
+            padding: 0 20px 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+
+        .category-scroll::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .category-card {
+            min-width: 100px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 14px 8px;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            scroll-snap-align: start;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .category-card:active {
+            transform: scale(0.95);
+        }
+
+        .category-card .emoji-big {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .category-card span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .category-card .badge-count {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 500;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== LISTA DE LUGARES EM DESTAQUE ===== */
+        .place-list {
+            padding: 0 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .place-item {
+            display: flex;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 12px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .place-item:active {
+            transform: scale(0.98);
+            background: #f8fafc;
+        }
+
+        .place-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            color: #1e3a5f;
+        }
+
+        .place-info {
+            flex: 1;
+        }
+
+        .place-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .place-info .place-type {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .place-info .place-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .place-info .place-meta i {
+            color: #f59e0b;
+            margin-right: 2px;
+        }
+
+        .place-tag {
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1e3a5f;
+            white-space: nowrap;
+        }
+
+        /* ===== BOTTOM NAV (SIMULAÇÃO) ===== */
+        .bottom-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: #ffffff;
+            border-top: 1px solid #f1f5f9;
+            padding: 6px 0 12px;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: #1e3a5f;
+        }
+
+        .nav-item.active i {
+            transform: translateY(-2px);
+        }
+
+        .nav-item:active {
+            transform: scale(0.92);
+        }
+
+        /* ===== GAMIFICAÇÃO / SELOS (MINI) ===== */
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            padding: 0 20px 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill {
+            background: #f8fafc;
+            padding: 4px 14px 4px 10px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e293b;
+            border: 1px solid #f1f5f9;
+        }
+
+        .badge-pill i {
+            font-size: 16px;
+        }
+
+        .badge-pill.gold {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .badge-pill.green {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 430px) {
+            .app-container {
+                height: 95vh;
+                max-height: 820px;
+                border-radius: 28px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header .greeting h2 {
+                font-size: 18px;
+            }
+            .quick-btn span {
+                font-size: 10px;
+            }
+            .category-card {
+                min-width: 80px;
+                padding: 10px 4px;
+            }
+        }
+
+        /* ===== ANIMAÇÃO DE ENTRADA ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-container {
+            animation: fadeUp 0.6s ease both;
+        }
+
+        /* ===== INTERATIVIDADE EXTRA (hover/active) ===== */
+        .place-item, .category-card, .quick-btn, .nav-item {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ===== SCROLL INDICATOR (SUGESTÃO) ===== */
+        .scroll-hint {
+            text-align: center;
+            font-size: 10px;
+            color: #cbd5e1;
+            padding: 2px 0 8px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- ===== STATUS BAR ===== -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i></span>
+        </div>
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="greeting">
+                <h2>Olá, viajante! 👋</h2>
+                <p>Campos do Jordão te espera</p>
+            </div>
+            <div class="weather-box">
+                <i class="fas fa-cloud-sun"></i> 14°C
+            </div>
+        </div>
+
+        <!-- ===== DICA DO DIA (CLIMA) ===== -->
+        <div class="daily-tip">
+            <div class="tip-text">
+                <span class="tip-label">☀️ Dica do dia</span>
+                <span class="tip-title">Dia de sol!</span>
+                <span class="tip-sub">Aproveite os mirantes e parques</span>
+            </div>
+            <div class="tip-icon">
+                <i class="fas fa-hiking"></i>
+            </div>
+        </div>
+
+        <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+        <div class="main-content">
+
+            <!-- ATALHOS RÁPIDOS -->
+            <div class="quick-actions">
+                <a class="quick-btn" href="#">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Mapa</span>
+                </a>
+                <a class="quick-btn" href="#">
+                    <i class="fas fa-route"></i>
+                    <span>Roteiro</span>
+                </a>
+                <a class="quick-btn" href="#">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Benefícios</span>
+                </a>
+                <a class="quick-btn" href="#">
+                    <i class="fas fa-trophy"></i>
+                    <span>Selos</span>
+                </a>
+            </div>
+
+            <!-- CATEGORIAS -->
+            <div class="section-header">
+                <h3>Explorar</h3>
+                <a href="#">Ver todos</a>
+            </div>
+            <div class="category-scroll">
+                <div class="category-card">
+                    <span class="emoji-big">🏛️</span>
+                    <span>Pontos Turíst.</span>
+                    <span class="badge-count">28 lugares</span>
+                </div>
+                <div class="category-card">
+                    <span class="emoji-big">🍽️</span>
+                    <span>Gastronomia</span>
+                    <span class="badge-count">46 lugares</span>
+                </div>
+                <div class="category-card">
+                    <span class="emoji-big">🏨</span>
+                    <span>Hospedagem</span>
+                    <span class="badge-count">32 lugares</span>
+                </div>
+                <div class="category-card">
+                    <span class="emoji-big">🎟️</span>
+                    <span>Passeios</span>
+                    <span class="badge-count">15 lugares</span>
+                </div>
+                <div class="category-card">
+                    <span class="emoji-big">🛍️</span>
+                    <span>Compras</span>
+                    <span class="badge-count">12 lugares</span>
+                </div>
+            </div>
+
+            <!-- DESTAQUES -->
+            <div class="section-header">
+                <h3>✨ Destaques</h3>
+                <a href="#">Ver mais</a>
+            </div>
+            <div class="place-list">
+
+                <div class="place-item">
+                    <div class="place-img">🌲</div>
+                    <div class="place-info">
+                        <h4>Parque Amantikir</h4>
+                        <span class="place-type">Parque • Jardins</span>
+                        <div class="place-meta">
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                            <span>📍 2,3 km</span>
+                            <span class="place-tag">☀️ Sol</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="place-item">
+                    <div class="place-img">🧀</div>
+                    <div class="place-info">
+                        <h4>Fondue Só Queijo</h4>
+                        <span class="place-type">Restaurante • Fondue</span>
+                        <div class="place-meta">
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                            <span>📍 0,8 km</span>
+                            <span class="place-tag">🌧️ Chuva</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="place-item">
+                    <div class="place-img">🗻</div>
+                    <div class="place-info">
+                        <h4>Morro do Elefante</h4>
+                        <span class="place-type">Mirante • Teleférico</span>
+                        <div class="place-meta">
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                            <span>📍 3,1 km</span>
+                            <span class="place-tag">☀️ Sol</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="place-item">
+                    <div class="place-img">🍫</div>
+                    <div class="place-info">
+                        <h4>Chocolateria Bruno Alves</h4>
+                        <span class="place-type">Chocolateria • Café</span>
+                        <div class="place-meta">
+                            <span><i class="fas fa-star"></i> 4.6</span>
+                            <span>📍 0,4 km</span>
+                            <span class="place-tag">🌧️ Chuva</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SELOS / GAMIFICAÇÃO MINI -->
+            <div class="section-header" style="padding-top: 4px;">
+                <h3>🏅 Seus selos</h3>
+                <a href="#">Ver todos</a>
+            </div>
+            <div class="badge-row">
+                <span class="badge-pill gold"><i class="fas fa-star"></i> Explorador</span>
+                <span class="badge-pill green"><i class="fas fa-check-circle"></i> 3 check-ins</span>
+                <span class="badge-pill"><i class="fas fa-utensils"></i> Chocolover</span>
+                <span class="badge-pill"><i class="fas fa-mountain"></i> Aventureiro</span>
+            </div>
+
+            <!-- OFERTA DESTAQUE -->
+            <div style="padding: 12px 20px 8px;">
+                <div style="background: linear-gradient(145deg, #fef3c7, #fde68a); border-radius: 18px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #fcd34d;">
+                    <div>
+                        <span style="font-size: 12px; font-weight: 700; color: #92400e; text-transform: uppercase;">🔥 Oferta exclusiva</span>
+                        <p style="font-size: 14px; font-weight: 700; color: #78350f; margin-top: 2px;">10% off no Parque Amantikir</p>
+                    </div>
+                    <span style="background: #ffffff; padding: 4px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; color: #1e3a5f; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">Resgatar</span>
+                </div>
+            </div>
+
+            <div class="scroll-hint">↓ role para mais</div>
+
+        </div>
+
+        <!-- ===== BOTTOM NAV ===== -->
+        <div class="bottom-nav">
+            <button class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-map"></i>
+                <span>Mapa</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>Pass</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ===== PEQUENO SCRIPT PARA SIMULAR INTERATIVIDADE ===== -->
+    <script>
+        // Navegação inferior: ativa ao clicar
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Cards e itens com feedback tátil (já tem no CSS :active)
+        // Pequeno alerta demonstrativo ao clicar em "Resgatar" oferta
+        document.querySelector('.daily-tip .tip-icon')?.addEventListener('click', function() {
+            // feedback sutil
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+        });
+
+        // Clicar em oferta
+        document.querySelector('[style*="background: linear-gradient"] span:last-child')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.innerText = '✅ Resgatado!';
+            this.style.background = '#dcfce7';
+            this.style.color = '#166534';
+            setTimeout(() => {
+                this.innerText = 'Resgatar';
+                this.style.background = '#ffffff';
+                this.style.color = '#1e3a5f';
+            }, 2000);
+        });
+
+        // Efeito nos itens de lugar (já tem :active)
+        console.log('🎒 Campos Pass - Protótipo interativo carregado!');
+    </script>
+
+</body>
+</html>
