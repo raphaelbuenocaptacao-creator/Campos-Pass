@@ -4,7 +4,10 @@
 
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+      const registration = await navigator.serviceWorker.register('./sw.js', {
+        scope: './',
+        updateViaCache: 'none'
+      });
       registration.update().catch(() => {});
     } catch (error) {
       console.warn('[Campos Pass] Service worker não registrado:', error);
