@@ -1,4 +1,4 @@
-const CACHE_NAME = 'campos-pass-shell-v2';
+const CACHE_NAME = 'campos-pass-shell-v3-safe';
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
@@ -10,7 +10,7 @@ const STATIC_ASSETS = [
 ];
 
 const PRIVATE_PATH_RE = /\/(api|auth|login|logout|admin|session|sessions|token|tokens|account|profile|me)(\/|$)/i;
-const SENSITIVE_QUERY_RE = /^(token|access_token|refresh_token|password|secret|session|auth|authorization|api[_-]?key|key)$/i;
+const SENSITIVE_QUERY_RE = /^(token|access_token|refresh_token|password|secret|session|auth|authorization|api[_-]?key|key|code|credential|credentials)$/i;
 const STATIC_PATHS = new Set(STATIC_ASSETS.map(asset => new URL(asset, self.registration.scope).pathname));
 
 function hasSensitiveQuery(url) {
@@ -54,7 +54,7 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request, { cache: 'no-store' })
+      fetch(request, { cache: 'no-store', credentials: 'same-origin' })
         .then(response => response)
         .catch(() => caches.match(OFFLINE_URL))
     );
@@ -65,7 +65,7 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     caches.match(request).then(cached => {
-      const networkFetch = fetch(request)
+      const networkFetch = fetch(request, { credentials: 'same-origin' })
         .then(response => {
           if (response && response.ok && response.type === 'basic') {
             const copy = response.clone();
