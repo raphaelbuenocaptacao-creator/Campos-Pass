@@ -1,4 +1,5 @@
-const CACHE_NAME = 'campos-pass-shell-v4-safe';
+const CACHE_PREFIX = 'campos-pass-';
+const CACHE_NAME = `${CACHE_PREFIX}v5-safe-shell`;
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
@@ -36,16 +37,34 @@ function isStaticShellRequest(request) {
   return STATIC_PATHS.has(url.pathname);
 }
 
+function responseIsCacheable(response) {
+  if (!response || !response.ok || response.status === 206 || response.type !== 'basic') return false;
+  const cacheControl = (response.headers.get('cache-control') || '').toLowerCase();
+  if (cacheControl.includes('private') || cacheControl.includes('no-store')) return false;
+  if (response.headers.has('set-cookie')) return false;
+  return true;
+}
+
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)));
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.allSettled(STATIC_ASSETS.map(async asset => {
+      const request = new Request(asset, { credentials: 'omit', cache: 'reload' });
+      const response = await fetch(request);
+      if (responseIsCacheable(response)) await cache.put(request, response.clone());
+    }));
+  })());
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(key => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+      .map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', event => {
@@ -56,25 +75,25 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(request, { cache: 'no-store', credentials: 'same-origin' })
         .then(response => response)
-        .catch(() => caches.match(OFFLINE_URL))
+        .catch(async () => {
+          const cache = await caches.open(CACHE_NAME);
+          return (await cache.match(OFFLINE_URL)) || Response.error();
+        })
     );
     return;
   }
 
   if (!isStaticShellRequest(request)) return;
 
-  event.respondWith(
-    caches.match(request).then(cached => {
-      const networkFetch = fetch(request, { credentials: 'same-origin' })
-        .then(response => {
-          if (response && response.ok && response.type === 'basic') {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || networkFetch;
-    })
-  );
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(request);
+    try {
+      const response = await fetch(request, { credentials: 'omit', cache: 'no-cache' });
+      if (responseIsCacheable(response)) await cache.put(request, response.clone());
+      return response;
+    } catch {
+      return cached || Response.error();
+    }
+  })());
 });
