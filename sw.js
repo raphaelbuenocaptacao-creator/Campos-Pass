@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campos-pass-';
-const CACHE_NAME = `${CACHE_PREFIX}v5-safe-shell`;
+const CACHE_NAME = `${CACHE_PREFIX}v6-safe-shell`;
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
@@ -24,6 +24,7 @@ function hasSensitiveQuery(url) {
 function isSafeRequest(request) {
   if (request.method !== 'GET') return false;
   if (request.headers.has('authorization') || request.headers.has('cookie')) return false;
+  if (request.headers.has('range') || request.headers.has('if-range')) return false;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return false;
   if (PRIVATE_PATH_RE.test(url.pathname) || hasSensitiveQuery(url)) return false;
@@ -39,6 +40,7 @@ function isStaticShellRequest(request) {
 
 function responseIsCacheable(response) {
   if (!response || !response.ok || response.status === 206 || response.type !== 'basic') return false;
+  if (response.redirected || response.headers.has('content-range')) return false;
   const cacheControl = (response.headers.get('cache-control') || '').toLowerCase();
   if (cacheControl.includes('private') || cacheControl.includes('no-store')) return false;
   if (response.headers.has('set-cookie')) return false;
