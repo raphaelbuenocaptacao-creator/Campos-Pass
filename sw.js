@@ -1,13 +1,13 @@
 const CACHE_PREFIX = 'campos-pass-';
-const CACHE_NAME = `${CACHE_PREFIX}v6-safe-shell`;
+const CACHE_NAME = `${CACHE_PREFIX}v7-raster-safe-shell`;
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icon-192.svg',
-  './icon-512.svg',
-  './icon-512-maskable.svg'
+  './icon-192.png',
+  './icon-512.png',
+  './icon-512-maskable.png'
 ];
 
 const PRIVATE_PATH_RE = /\/(api|auth|login|logout|admin|session|sessions|token|tokens|account|profile|me)(\/|$)/i;
