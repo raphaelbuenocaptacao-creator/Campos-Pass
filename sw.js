@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campos-pass-';
-const CACHE_NAME = `${CACHE_PREFIX}v7-raster-safe-shell`;
+const CACHE_NAME = `${CACHE_PREFIX}v8-private-vary-safe-shell`;
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
@@ -38,12 +38,20 @@ function isStaticShellRequest(request) {
   return STATIC_PATHS.has(url.pathname);
 }
 
+function variesPrivate(response) {
+  const vary = (response.headers.get('vary') || '').toLowerCase();
+  return vary.split(',').some(value => {
+    const key = value.trim();
+    return key === 'cookie' || key === 'authorization';
+  });
+}
+
 function responseIsCacheable(response) {
   if (!response || !response.ok || response.status === 206 || response.type !== 'basic') return false;
   if (response.redirected || response.headers.has('content-range')) return false;
   const cacheControl = (response.headers.get('cache-control') || '').toLowerCase();
   if (cacheControl.includes('private') || cacheControl.includes('no-store')) return false;
-  if (response.headers.has('set-cookie')) return false;
+  if (response.headers.has('set-cookie') || variesPrivate(response)) return false;
   return true;
 }
 
@@ -51,7 +59,7 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await Promise.allSettled(STATIC_ASSETS.map(async asset => {
-      const request = new Request(asset, { credentials: 'omit', cache: 'reload' });
+      const request = new Request(asset, { credentials: 'omit', cache: 'reload', redirect: 'error' });
       const response = await fetch(request);
       if (responseIsCacheable(response)) await cache.put(request, response.clone());
     }));
@@ -75,7 +83,7 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request, { cache: 'no-store', credentials: 'same-origin' })
+      fetch(request, { cache: 'no-store', credentials: 'same-origin', redirect: 'error' })
         .then(response => response)
         .catch(async () => {
           const cache = await caches.open(CACHE_NAME);
@@ -91,7 +99,7 @@ self.addEventListener('fetch', event => {
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(request);
     try {
-      const response = await fetch(request, { credentials: 'omit', cache: 'no-cache' });
+      const response = await fetch(request, { credentials: 'omit', cache: 'no-cache', redirect: 'error' });
       if (responseIsCacheable(response)) await cache.put(request, response.clone());
       return response;
     } catch {
