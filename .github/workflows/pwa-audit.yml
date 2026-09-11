@@ -1,0 +1,48 @@
+name: Campos Pass PWA Audit
+
+on:
+  push:
+    paths:
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'pwa-register.js'
+      - 'index.html'
+      - 'icon-192.png'
+      - 'icon-512.png'
+      - 'icon-512-maskable.png'
+      - '.github/workflows/pwa-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PWA files
+        run: |
+          test -s manifest.webmanifest
+          test -s sw.js
+          test -s pwa-register.js
+          test -s icon-192.png
+          test -s icon-512.png
+          test -s icon-512-maskable.png
+          grep -q '"display": "standalone"' manifest.webmanifest
+          grep -q 'icon-192.png' manifest.webmanifest
+          grep -q 'icon-512.png' manifest.webmanifest
+          grep -q 'maskable' manifest.webmanifest
+          grep -q 'rel="manifest"' index.html
+          grep -q 'theme-color' index.html
+          grep -q 'serviceWorker' pwa-register.js
+      - name: Validate safe cache policy
+        run: |
+          grep -qi "authorization" sw.js
+          grep -qi "cookie" sw.js
+          grep -qi "if-range" sw.js
+          grep -qi "content-range" sw.js
+          grep -qi "status === 206" sw.js
+          grep -Eq "key === ['\"]range['\"]" sw.js
+          grep -Eq "key === ['\"]if-range['\"]" sw.js
+          grep -q "key.startsWith(CACHE_PREFIX)" sw.js
