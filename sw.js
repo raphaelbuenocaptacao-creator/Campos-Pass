@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campos-pass-';
-const CACHE_NAME = `${CACHE_PREFIX}v9-private-vary-star-safe-shell`;
+const CACHE_NAME = `${CACHE_PREFIX}v10-range-vary-safe-shell`;
 const OFFLINE_URL = './';
 const STATIC_ASSETS = [
   './',
@@ -42,7 +42,7 @@ function variesPrivate(response) {
   const vary = (response.headers.get('vary') || '').toLowerCase();
   return vary.split(',').some(value => {
     const key = value.trim();
-    return key === '*' || key === 'cookie' || key === 'authorization';
+    return key === '*' || key === 'cookie' || key === 'authorization' || key === 'range' || key === 'if-range';
   });
 }
 
