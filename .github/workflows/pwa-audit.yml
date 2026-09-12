@@ -46,3 +46,24 @@ jobs:
           grep -Eq "key === ['\"]range['\"]" sw.js
           grep -Eq "key === ['\"]if-range['\"]" sw.js
           grep -q "key.startsWith(CACHE_PREFIX)" sw.js
+      - name: Validate service worker version alignment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          sw = Path('sw.js').read_text(encoding='utf-8')
+          register = Path('pwa-register.js').read_text(encoding='utf-8')
+
+          cache_match = re.search(r"CACHE_NAME\s*=\s*`\$\{CACHE_PREFIX\}(v[^`]+)`", sw)
+          register_match = re.search(r"sw\.js\?([^'\"\s]+)", register)
+
+          assert cache_match, 'CACHE_NAME version not found in sw.js'
+          assert register_match, 'registered service worker version not found in pwa-register.js'
+
+          cache_version = cache_match.group(1)
+          registered_version = register_match.group(1)
+          assert registered_version == cache_version, (
+              f'service worker version mismatch: register={registered_version} cache={cache_version}'
+          )
+          PY
