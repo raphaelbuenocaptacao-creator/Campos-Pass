@@ -34,7 +34,7 @@
 
   window.addEventListener('load', async () => {
     try {
-      registrationRef = await navigator.serviceWorker.register('./sw.js?v=9-private-vary-star-safe', {
+      registrationRef = await navigator.serviceWorker.register('./sw.js?v10-range-vary-safe-shell', {
         scope: './',
         updateViaCache: 'none'
       });
