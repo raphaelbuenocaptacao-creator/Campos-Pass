@@ -4,6 +4,8 @@
 
   let registrationRef = null;
   let deferredInstallPrompt = null;
+  let refreshing = false;
+  const wasControlled = Boolean(navigator.serviceWorker.controller);
 
   async function refreshServiceWorker() {
     if (!registrationRef) return;
@@ -30,6 +32,12 @@
 
   window.addEventListener('appinstalled', () => {
     deferredInstallPrompt = null;
+  });
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!wasControlled || refreshing) return;
+    refreshing = true;
+    window.location.reload();
   });
 
   window.addEventListener('load', async () => {
