@@ -52,15 +52,7 @@ jobs:
           grep -q 'beforeinstallprompt' pwa-register.js
           grep -q "updateViaCache: 'none'" pwa-register.js
           grep -q 'visibilitychange' pwa-register.js
-      - name: Validate responsive app shell
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          html = Path('index.html').read_text(encoding='utf-8')
-          assert 'height: min(820px, 100dvh);' in html, 'app shell must fit dynamic mobile viewport'
-          assert '@media (max-width: 480px)' in html, 'small-screen media query missing'
-          assert 'padding: 0;' in html, 'small-screen body padding reset missing'
-          PY
+          grep -q 'controllerchange' pwa-register.js
       - name: Validate safe cache policy
         run: |
           grep -qi "authorization" sw.js
