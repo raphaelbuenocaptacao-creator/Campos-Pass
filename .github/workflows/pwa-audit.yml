@@ -11,6 +11,16 @@ on:
       - 'icon-512.png'
       - 'icon-512-maskable.png'
       - '.github/workflows/pwa-audit.yml'
+  pull_request:
+    paths:
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'pwa-register.js'
+      - 'index.html'
+      - 'icon-192.png'
+      - 'icon-512.png'
+      - 'icon-512-maskable.png'
+      - '.github/workflows/pwa-audit.yml'
   workflow_dispatch:
 
 permissions:
@@ -35,7 +45,13 @@ jobs:
           grep -q 'maskable' manifest.webmanifest
           grep -q 'rel="manifest"' index.html
           grep -q 'theme-color' index.html
+          grep -q 'name="viewport"' index.html
+          grep -q 'name="mobile-web-app-capable" content="yes"' index.html
+          grep -q 'name="apple-mobile-web-app-capable" content="yes"' index.html
           grep -q 'serviceWorker' pwa-register.js
+          grep -q 'beforeinstallprompt' pwa-register.js
+          grep -q "updateViaCache: 'none'" pwa-register.js
+          grep -q 'visibilitychange' pwa-register.js
       - name: Validate safe cache policy
         run: |
           grep -qi "authorization" sw.js
